@@ -3,11 +3,10 @@ import {
     Dialog,
     DialogClose,
     DialogContent,
-    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
+    DialogTrigger
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -16,10 +15,10 @@ import {
     SelectContent,
     SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
-    SelectValue,
+    SelectValue
 } from "@/components/ui/select"
+import { projectStatuses } from "@/utils/project"
 import { PlusIcon } from "lucide-react"
 
 export const CreateProject = () => {
@@ -52,10 +51,10 @@ export const CreateProject = () => {
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectGroup>
-                                        <SelectItem value="new">Nuevo</SelectItem>
-                                        <SelectItem value="process">En proceso</SelectItem>
-                                        <SelectItem value="testing">Testing</SelectItem>
-                                        <SelectItem value="completed">Completados</SelectItem>
+                                        {
+                                            ...projectStatuses.map(({id, name})=>(<SelectItem value={id}>{name}</SelectItem>))
+                                        }
+                                        
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>
