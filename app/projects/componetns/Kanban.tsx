@@ -95,13 +95,7 @@ export const Kanban = () => {
                                             {project.description}
                                         </p>
                                     )}
-                                    <div className="flex flex-wrap items-center gap-2 mt-1">
-                                            <span
-                                                key={project.status}
-                                                className="text-[11px] px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300"
-                                            >
-                                                {project.status}
-                                            </span>
+                                    <div className="flex">
                                             <span
                                                 key={project.priority}
                                                 className="text-[11px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300"
