@@ -1,5 +1,8 @@
+"use client"
+
 import { CreateProject } from "./componetns/CreateProject"
-import { Kanban } from "./componetns/Kanban";
+import dynamic from 'next/dynamic'
+const Kanban = dynamic(() => import('../projects/componetns/Kanban').then(m => m.Kanban), { ssr: false })
 
 export default function Page() {
     return (

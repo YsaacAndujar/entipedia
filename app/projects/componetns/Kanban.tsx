@@ -117,3 +117,4 @@ export const Kanban = () => {
         </KanbanProvider>
     );
 };
+export default Kanban
