@@ -52,9 +52,9 @@ export const CreateProject = () => {
                                 <SelectContent>
                                     <SelectGroup>
                                         {
-                                            ...projectStatuses.map(({id, name})=>(<SelectItem value={id}>{name}</SelectItem>))
+                                            ...projectStatuses.map(({ id, name }) => (<SelectItem value={id}>{name}</SelectItem>))
                                         }
-                                        
+
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>
