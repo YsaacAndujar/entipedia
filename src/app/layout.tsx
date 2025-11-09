@@ -3,6 +3,7 @@ import { Header } from "@/components/header";
 import { Providers } from "@/providers/providers";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ToastContainer } from 'react-toastify';
 import "./globals.css";
 
 const geistSans = Geist({
@@ -32,6 +33,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <ToastContainer autoClose={3000} pauseOnFocusLoss={false} pauseOnHover={false}/>
         <div className="flex flex-col min-h-screen">
       <Header />
       <div className="flex flex-1">

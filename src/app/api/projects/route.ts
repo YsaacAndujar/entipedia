@@ -1,14 +1,7 @@
-import { ProjectPriority, ProjectStatus } from "@/db/schema";
 import { db, projects } from "@/lib/db";
+import { projectSchema } from "@/lib/validations";
 import { NextResponse } from "next/server";
-import { z } from "zod";
 
-const projectSchema = z.object({
-    name: z.string("El nombre es obligatorio").min(1, "El nombre es obligatorio"),
-    description: z.string("La descripción es obligatoria").min(1, "La descripción es obligatoria"),
-    status: z.enum(ProjectStatus.enumValues),
-    priority: z.enum(ProjectPriority.enumValues),
-});
 
 export async function POST(req: Request) {
     try {
