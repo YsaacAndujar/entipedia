@@ -98,7 +98,7 @@ export const CreateProject = () => {
                         <div className="grid gap-3">
                             <Label>Estatus</Label>
                             <Select
-                                onValueChange={(value: (typeof ProjectStatus.enumValues)[number]) => setValue("status", value)}
+                                onValueChange={(value: (typeof ProjectStatus.enumValues)[number]) => setValue("status", value, { shouldTouch: true })}
                             >
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder="Selecciona un estado" />
@@ -121,7 +121,7 @@ export const CreateProject = () => {
                         <div className="grid gap-3">
                             <Label>Prioridad</Label>
                             <Select
-                                onValueChange={(value: (typeof ProjectPriority.enumValues)[number]) => setValue("priority", value)}
+                                onValueChange={(value: (typeof ProjectPriority.enumValues)[number]) => setValue("priority", value, { shouldTouch: true })}
                             >
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder="Selecciona la prioridad" />
