@@ -70,9 +70,9 @@ const clients: ClientItem[] = [
         to: "2025-11-30"
     }
 ];
-//todo: refactorize
+//TODO: refactorize
 export default function Page() {
-    //todo: fix state, probably on refactorize
+    //TODO: fix state, probably on refactorize
     const [open, setOpen] = useState(false)
     const [date, setDate] = useState<Date | undefined>(undefined)
     return (
