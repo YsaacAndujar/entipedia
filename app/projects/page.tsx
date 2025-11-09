@@ -6,10 +6,17 @@ const Kanban = dynamic(() => import('../projects/componetns/Kanban').then(m => m
 
 export default function Page() {
     return (
-        <div className="space-y-4">
-            <CreateProject />
-            <Kanban />
-        </div>
+        <>
+            <h1 className="text-3xl font-bold">
+                Proyectos
+            </h1>
+
+            <div className="space-y-4">
+
+                <CreateProject />
+                <Kanban />
+            </div>
+        </>
     );
 }
 

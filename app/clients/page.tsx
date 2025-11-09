@@ -77,6 +77,9 @@ export default function Page() {
     const [date, setDate] = useState<Date | undefined>(undefined)
     return (
         <>
+        <h1 className="text-3xl font-bold">
+                Clientes
+            </h1>
         <CreateClient />
             <Table>
                 <TableHeader>
