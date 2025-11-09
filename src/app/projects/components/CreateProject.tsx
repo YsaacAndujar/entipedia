@@ -57,8 +57,8 @@ export const CreateProject = () => {
                 return
             }
             await queryClient.invalidateQueries({ queryKey: ["projects"] })
-            reset()
             setOpen(false)
+            reset()
             toast.success('Proyecto creado correctamente')
         } catch (error) {
             toast.error('Error al crear el proyecto')

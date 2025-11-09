@@ -10,8 +10,8 @@ import {
 } from '@/components/ui/shadcn-io/kanban';
 import { useProjects } from '@/hooks/useProjects';
 import { Project } from '@/lib/db';
-import { cn, PRIORITY_LABELS, projectStatuses } from '@/lib/utils';
-type ProjectKanbanItem = KanbanItemProps & Omit<Project, "id">;
+import { cn, formatDate, PRIORITY_LABELS, projectStatuses } from '@/lib/utils';
+type ProjectKanbanItem = KanbanItemProps & Omit<Project, "id" | "createdAt"> & {createdAt: string};
 export const Kanban = () => {
     const { data: projects, isLoading, error } = useProjects();
     if (isLoading) return <p>Cargando proyectos...</p>;
@@ -66,7 +66,7 @@ export const Kanban = () => {
                                     </div>
                                     {project.createdAt && (
                                         <p className="text-[11px] text-muted-foreground mt-1">
-                                            {new Date(project.createdAt).toISOString()}
+                                            {formatDate(project.createdAt)}
                                         </p>
                                     )}
                                 </div>
