@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/shadcn-io/kanban';
 import { useProjects } from '@/hooks/useProjects';
 import { Project } from '@/lib/db';
-import { cn } from '@/lib/utils';
+import { cn, PRIORITY_LABELS } from '@/lib/utils';
 import { projectStatuses } from '@/utils/project';
 type ProjectKanbanItem = KanbanItemProps & Omit<Project, "id">;
 export const Kanban = () => {
@@ -62,7 +62,7 @@ export const Kanban = () => {
                                                 }
                                             )}
                                         >
-                                            {project.priority}
+                                            {PRIORITY_LABELS[project.priority]}
                                         </span>
                                     </div>
                                     {project.createdAt && (
