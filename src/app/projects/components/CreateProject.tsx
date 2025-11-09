@@ -18,7 +18,8 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select"
-import { projectStatuses } from "@/utils/project"
+import { ProjectStatus } from "@/db/schema"
+import { PRIORITY_LABELS } from "@/lib/utils"
 import { PlusIcon } from "lucide-react"
 
 export const CreateProject = () => {
@@ -52,9 +53,8 @@ export const CreateProject = () => {
                                 <SelectContent>
                                     <SelectGroup>
                                         {
-                                            ...projectStatuses.map(({ id, name }) => (<SelectItem value={id}>{name}</SelectItem>))
+                                            ...ProjectStatus.enumValues.map((value) => (<SelectItem value={value}>{value}</SelectItem>))
                                         }
-
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>
@@ -67,9 +67,9 @@ export const CreateProject = () => {
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectGroup>
-                                        <SelectItem value="high">Alta</SelectItem>
-                                        <SelectItem value="medium">Media</SelectItem>
-                                        <SelectItem value="low">Baja</SelectItem>
+                                        <SelectItem value="high">{PRIORITY_LABELS["high"]}</SelectItem>
+                                        <SelectItem value="medium">{PRIORITY_LABELS["medium"]}</SelectItem>
+                                        <SelectItem value="low">{PRIORITY_LABELS["low"]}</SelectItem>
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>

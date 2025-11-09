@@ -10,8 +10,7 @@ import {
 } from '@/components/ui/shadcn-io/kanban';
 import { useProjects } from '@/hooks/useProjects';
 import { Project } from '@/lib/db';
-import { cn, PRIORITY_LABELS } from '@/lib/utils';
-import { projectStatuses } from '@/utils/project';
+import { cn, PRIORITY_LABELS, projectStatuses } from '@/lib/utils';
 type ProjectKanbanItem = KanbanItemProps & Omit<Project, "id">;
 export const Kanban = () => {
     const { data: projects, isLoading, error } = useProjects();
