@@ -1,8 +1,6 @@
-"use client"
 
-import { CreateProject } from "./componetns/CreateProject"
-import dynamic from 'next/dynamic'
-const Kanban = dynamic(() => import('../projects/componetns/Kanban').then(m => m.Kanban), { ssr: false })
+import { CreateProject } from "./components/CreateProject"
+import { KanbanWrapper } from "./components/KanbanWrapper";
 
 export default function Page() {
     return (
@@ -14,7 +12,7 @@ export default function Page() {
             <div className="space-y-4">
 
                 <CreateProject />
-                <Kanban />
+                <KanbanWrapper />
             </div>
         </>
     );
