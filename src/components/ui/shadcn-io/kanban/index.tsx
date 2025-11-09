@@ -32,6 +32,7 @@ import tunnel from 'tunnel-rat';
 import { Card } from '@/components/ui/card';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
+import { DeleteModal } from '@/components/DeleteModal';
 
 const t = tunnel();
 
@@ -91,6 +92,7 @@ export const KanbanBoard = ({ id, children, className }: KanbanBoardProps) => {
 export type KanbanCardProps<T extends KanbanItemProps = KanbanItemProps> = T & {
   children?: ReactNode;
   className?: string;
+  deleteModalProps: { id: string | number, url: string }
 };
 
 export const KanbanCard = <T extends KanbanItemProps = KanbanItemProps>({
@@ -98,6 +100,7 @@ export const KanbanCard = <T extends KanbanItemProps = KanbanItemProps>({
   name,
   children,
   className,
+  deleteModalProps,
 }: KanbanCardProps<T>) => {
   const {
     attributes,
@@ -118,15 +121,23 @@ export const KanbanCard = <T extends KanbanItemProps = KanbanItemProps>({
 
   return (
     <>
-      <div style={style} {...listeners} {...attributes} ref={setNodeRef}>
+      <div style={style} {...attributes} ref={setNodeRef}>
         <Card
           className={cn(
-            'cursor-grab gap-4 rounded-md p-3 shadow-sm',
+            'gap-4 rounded-md p-3 shadow-sm',
             isDragging && 'pointer-events-none cursor-grabbing opacity-30',
             className
           )}
         >
-          {children ?? <p className="m-0 font-medium text-sm">{name}</p>}
+          <div {...listeners}
+            className={cn(
+              'cursor-grab',
+            )}>
+            {children ?? <p className="m-0 font-medium text-sm">{name}</p>}
+          </div>
+          <div className='flex justify-center border-t pt-2'>
+            <DeleteModal {...deleteModalProps} />
+          </div>
         </Card>
       </div>
       {activeCardId === id && (

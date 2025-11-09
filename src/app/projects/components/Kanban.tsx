@@ -41,6 +41,8 @@ export const Kanban = () => {
                                 id={project.id}
                                 key={project.id}
                                 name={project.name}
+                                deleteModalProps={{url:'/api/projects', id:project.id}}
+
                             >
                                 <div className="flex flex-col gap-2">
                                     <p className="font-medium text-sm text-foreground">{project.name}</p>
@@ -64,11 +66,11 @@ export const Kanban = () => {
                                             {PRIORITY_LABELS[project.priority]}
                                         </span>
                                     </div>
-                                    {project.createdAt && (
-                                        <p className="text-[11px] text-muted-foreground mt-1">
+                                    <div className="flex items-center justify-between mt-1">
+                                        <p className="text-[11px] text-muted-foreground">
                                             {formatDate(project.createdAt)}
                                         </p>
-                                    )}
+                                    </div>
                                 </div>
                             </KanbanCard>
                         )}
