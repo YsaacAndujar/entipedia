@@ -37,7 +37,7 @@ const t = tunnel();
 
 export type { DragEndEvent } from '@dnd-kit/core';
 
-type KanbanItemProps = {
+export type KanbanItemProps = {
   id: string;
   name: string;
   column: string;
@@ -165,7 +165,7 @@ export const KanbanCards = <T extends KanbanItemProps = KanbanItemProps>({
     <ScrollArea className="overflow-hidden">
       <SortableContext items={items}>
         <div
-          className={cn('flex flex-grow flex-col gap-2 p-2', className)}
+          className={cn('flex grow flex-col gap-2 p-2', className)}
           {...props}
         >
           {filteredData.map(children)}
