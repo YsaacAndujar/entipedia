@@ -18,19 +18,29 @@ type ProjectKanbanItem = KanbanItemProps & Omit<Project, "id" | "createdAt"> & {
 export const Kanban = () => {
     const { data: projects, isLoading, error } = useProjects();
     const { mutate: deleteProject, isPending } = useDelete()
-    const { mutate: moveProject} = useMoveProject()
+    const { mutate: moveProject } = useMoveProject()
     const [projectsFormatted, setProjectsFormatted] = useState<ProjectKanbanItem[]>([])
-    useEffect(()=>{
+    useEffect(() => {
         setProjectsFormatted((projects || []).map((project: Project) => ({ ...project, column: project.status, id: `${project.id}` })))
     }, [projects])
 
     if (isLoading) return <p>Cargando proyectos...</p>;
     if (error) return <p>Error al cargar los proyectos.</p>;
+    document.querySelectorAll('div').forEach(div => {
+        const style = getComputedStyle(div);
+        if (style.display === 'table' && style.minWidth !== '0px') {
+            div.style.display = 'block';
+        }
+    });
+    const handlemove = (id: number | string, status: any) => {
+        if (!status || !ProjectStatus.enumValues.includes(status)) return
+        moveProject({ id, status })
+    }
     return (
         <KanbanProvider
             columns={projectStatuses}
             data={projectsFormatted}
-            onDragEnd={({active, over}) => { moveProject({id: active.id, status: over?.id as typeof ProjectStatus.enumValues[number]}) }}
+            onDragEnd={({ active, over }) => { handlemove(active.id, over?.id) }}
         >
             {(column) => (
                 <KanbanBoard id={column.id} key={column.id}>
@@ -53,9 +63,9 @@ export const Kanban = () => {
                                 deleteModalProps={{ onDelete: () => deleteProject({ url: `/api/projects/${project.id}`, queryKey: ["projects"] }), isPending }}
                             >
                                 <div className="flex flex-col gap-2">
-                                    <p className="font-medium text-sm text-foreground">{project.name}</p>
+                                    <p className="font-medium text-sm text-foreground wrap-break-word">{project.name}</p>
                                     {project.description && (
-                                        <p className="text-xs text-muted-foreground line-clamp-2">
+                                        <p className="text-xs text-muted-foreground line-clamp-2 wrap-break-word">
                                             {project.description}
                                         </p>
                                     )}
