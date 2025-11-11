@@ -23,8 +23,7 @@ export async function POST(req: Request) {
         return NextResponse.json(newProject);
 
     } catch (error) {
-        console.log(error)
-        return NextResponse.json(error, { status: 400 });
+        return NextResponse.json({error: 'Error eliminando el proyecto'}, { status: 400 });
     }
 
 }
