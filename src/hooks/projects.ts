@@ -1,3 +1,4 @@
+import { ProjectStatus } from "@/db/schema";
 import { ProjectFormValues } from "@/lib/validations";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
@@ -34,6 +35,24 @@ export function useCreateProject({ onSuccess }: { onSuccess?: () => void }) {
     onError: (error) => {
       console.error(error)
       toast.error("Error al crear el proyecto")
+    },
+  })
+}
+
+export function useMoveProject() {
+  return useMutation({
+    mutationFn: async ({id, status}: {id: string | number, status: typeof ProjectStatus.enumValues[number]}) => {
+      const res = await fetch(`/api/projects/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({status}),
+      })
+      if (!res.ok) throw new Error("Error al mover el proyecto")
+      return true
+    },
+    onError: (error) => {
+      console.error(error)
+      toast.error("Error al mover el proyecto")
     },
   })
 }

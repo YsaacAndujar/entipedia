@@ -8,22 +8,29 @@ import {
     KanbanItemProps,
     KanbanProvider,
 } from '@/components/ui/shadcn-io/kanban';
-import { useProjects } from '@/hooks/projects';
+import { ProjectStatus } from '@/db/schema';
+import { useMoveProject, useProjects } from '@/hooks/projects';
 import { useDelete } from '@/hooks/useDelete';
 import { Project } from '@/lib/db';
 import { cn, formatDate, PRIORITY_LABELS, projectStatuses } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 type ProjectKanbanItem = KanbanItemProps & Omit<Project, "id" | "createdAt"> & { createdAt: string };
 export const Kanban = () => {
     const { data: projects, isLoading, error } = useProjects();
     const { mutate: deleteProject, isPending } = useDelete()
-    console.log(isPending)
+    const { mutate: moveProject} = useMoveProject()
+    const [projectsFormatted, setProjectsFormatted] = useState<ProjectKanbanItem[]>([])
+    useEffect(()=>{
+        setProjectsFormatted((projects || []).map((project: Project) => ({ ...project, column: project.status, id: `${project.id}` })))
+    }, [projects])
+
     if (isLoading) return <p>Cargando proyectos...</p>;
     if (error) return <p>Error al cargar los proyectos.</p>;
     return (
         <KanbanProvider
             columns={projectStatuses}
-            data={projects.map((project: Project) => ({ ...project, column: project.status, id: `${project.id}` }))}
-            onDragEnd={(x) => { console.log(x) }}
+            data={projectsFormatted}
+            onDragEnd={({active, over}) => { moveProject({id: active.id, status: over?.id as typeof ProjectStatus.enumValues[number]}) }}
         >
             {(column) => (
                 <KanbanBoard id={column.id} key={column.id}>
