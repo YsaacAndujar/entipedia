@@ -92,7 +92,7 @@ export const KanbanBoard = ({ id, children, className }: KanbanBoardProps) => {
 export type KanbanCardProps<T extends KanbanItemProps = KanbanItemProps> = T & {
   children?: ReactNode;
   className?: string;
-  deleteModalProps: { id: string | number, url: string }
+  deleteModalProps: { onDelete: ()=> void, isPending: boolean }
 };
 
 export const KanbanCard = <T extends KanbanItemProps = KanbanItemProps>({

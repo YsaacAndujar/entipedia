@@ -10,13 +10,15 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Trash2 } from 'lucide-react'
+import { Button } from "./ui/button"
 
-export const DeleteModal = ({ }: { id: string | number, url: string }) => {
+export const DeleteModal = ({ onDelete, isPending }: { onDelete: ()=> void, isPending: boolean }) => {
+
     return (
         <>
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                        <Trash2 className="w-4 h-4 text-red-500 hover:text-red-600 transition-colors cursor-pointer" />
+                    <Trash2 className="w-4 h-4 text-red-500 hover:text-red-600 transition-colors cursor-pointer" />
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>
@@ -27,10 +29,17 @@ export const DeleteModal = ({ }: { id: string | number, url: string }) => {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                        <AlertDialogAction className="bg-red-500 hover:bg-red-600 transition-colors cursor-pointer">Eliminar</AlertDialogAction>
+                        <Button
+                            onClick={onDelete}
+                            disabled={isPending}
+                            className="bg-red-500 hover:bg-red-600 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {isPending ? "Eliminando..." : "Eliminar"}
+                        </Button>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
         </>
     )
 }
+

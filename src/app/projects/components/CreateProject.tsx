@@ -1,7 +1,5 @@
 "use client"
 
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -22,49 +20,36 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
 import { ProjectPriority, ProjectStatus } from "@/db/schema"
+import { useCreateProject } from "@/hooks/projects"
 import { PRIORITY_LABELS, PROJECT_STATUS_LABELS } from "@/lib/utils"
+import { ProjectFormValues, projectSchema } from "@/lib/validations"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { PlusIcon } from "lucide-react"
 import { useState } from "react"
-import { ProjectFormValues, projectSchema } from "@/lib/validations"
-import { Textarea } from "@/components/ui/textarea"
-import { toast } from "react-toastify"
-import { useQueryClient } from "@tanstack/react-query"
+import { useForm } from "react-hook-form"
 
 export const CreateProject = () => {
     const [open, setOpen] = useState(false)
-    const queryClient = useQueryClient()
+    const { mutate: createProject, isPending } = useCreateProject({
+        onSuccess: () => {
+            setOpen(false)
+            reset()
+        },
+    })
+    const onSubmit = (data: ProjectFormValues) => {
+        createProject(data)
+    }
     const {
         register,
         handleSubmit,
         setValue,
-        formState: { errors, isSubmitting },
+        formState: { errors },
         reset
     } = useForm<ProjectFormValues>({
         resolver: zodResolver(projectSchema),
     })
-
-    const onSubmit = async (data: ProjectFormValues) => {
-        try {
-            const res = await fetch("/api/projects", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data),
-            })
-
-            if (!res.ok) {
-                toast.error('Error al crear el proyecto')
-                return
-            }
-            await queryClient.invalidateQueries({ queryKey: ["projects"] })
-            setOpen(false)
-            reset()
-            toast.success('Proyecto creado correctamente')
-        } catch (error) {
-            toast.error('Error al crear el proyecto')
-            console.error(error)
-        }
-    }
 
     return (
         <div className="flex justify-end">
@@ -148,9 +133,9 @@ export const CreateProject = () => {
                             <Button
                                 type="submit"
                                 className="bg-green-400 hover:bg-green-500 cursor-pointer text-white text-md"
-                                disabled={isSubmitting}
+                                disabled={isPending}
                             >
-                                {isSubmitting ? "Guardando..." : "Guardar"}
+                                {isPending ? "Guardando..." : "Guardar"}
                             </Button>
                         </DialogFooter>
                     </form>

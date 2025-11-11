@@ -8,15 +8,17 @@ import {
     KanbanItemProps,
     KanbanProvider,
 } from '@/components/ui/shadcn-io/kanban';
-import { useProjects } from '@/hooks/useProjects';
+import { useProjects } from '@/hooks/projects';
+import { useDelete } from '@/hooks/useDelete';
 import { Project } from '@/lib/db';
 import { cn, formatDate, PRIORITY_LABELS, projectStatuses } from '@/lib/utils';
-type ProjectKanbanItem = KanbanItemProps & Omit<Project, "id" | "createdAt"> & {createdAt: string};
+type ProjectKanbanItem = KanbanItemProps & Omit<Project, "id" | "createdAt"> & { createdAt: string };
 export const Kanban = () => {
     const { data: projects, isLoading, error } = useProjects();
+    const { mutate: deleteProject, isPending } = useDelete()
+    console.log(isPending)
     if (isLoading) return <p>Cargando proyectos...</p>;
     if (error) return <p>Error al cargar los proyectos.</p>;
-
     return (
         <KanbanProvider
             columns={projectStatuses}
@@ -41,8 +43,7 @@ export const Kanban = () => {
                                 id={project.id}
                                 key={project.id}
                                 name={project.name}
-                                deleteModalProps={{url:'/api/projects', id:project.id}}
-
+                                deleteModalProps={{ onDelete: () => deleteProject({ url: `/api/projects/${project.id}`, queryKey: ["projects"] }), isPending }}
                             >
                                 <div className="flex flex-col gap-2">
                                     <p className="font-medium text-sm text-foreground">{project.name}</p>
