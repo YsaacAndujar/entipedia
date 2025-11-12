@@ -26,61 +26,21 @@ import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { useState } from "react";
 import { CreateClient } from "./componetns/CreateClient";
-type ClientItem = {
-    name: string;
-    type: "person" | "company"
-    value: number;
-    from: string;
-    to: string;
-};
-const clients: ClientItem[] = [
-    {
-        name: "Juan Pérez",
-        type: "person",
-        value: 50000,
-        from: "2025-01-01",
-        to: "2025-06-30"
-    },
-    {
-        name: "Compañía XYZ",
-        type: "company",
-        value: 150000,
-        from: "2025-02-15",
-        to: "2025-12-31"
-    },
-    {
-        name: "María Rodríguez",
-        type: "person",
-        value: 75000,
-        from: "2025-03-01",
-        to: "2025-09-30"
-    },
-    {
-        name: "Empresa ABC",
-        type: "company",
-        value: 200000,
-        from: "2025-04-01",
-        to: "2025-10-15"
-    },
-    {
-        name: "Carlos López",
-        type: "person",
-        value: 120000,
-        from: "2025-05-01",
-        to: "2025-11-30"
-    }
-];
-//TODO: refactorize
+import { useClientss as useClients } from "@/hooks/clients";
+import { ClientRow } from "./componetns/ClientRow";
+import { Client } from "@/lib/db";
+
 export default function Page() {
-    //TODO: fix state, probably on refactorize
-    const [open, setOpen] = useState(false)
-    const [date, setDate] = useState<Date | undefined>(undefined)
+    const { data: clients, isLoading, error } = useClients();
+
+    if (isLoading) return <p>Cargando clientes...</p>;
+    if (error) return <p>Error al cargar los clientes.</p>;
     return (
         <>
-        <h1 className="text-3xl font-bold">
+            <h1 className="text-3xl font-bold">
                 Clientes
             </h1>
-        <CreateClient />
+            <CreateClient />
             <Table>
                 <TableHeader>
                     <TableRow>
@@ -94,81 +54,8 @@ export default function Page() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {clients.map((client, idx) => (
-                        <TableRow key={client.name}>
-                            <TableCell ><Input id={`${idx}-name`} name={`${idx}-name`} defaultValue={client.name} /></TableCell>
-                            <TableCell>
-                                <Select>
-                                    <SelectTrigger id={`${idx}-type`} className="w-full">
-                                        <SelectValue placeholder="Seleciona un tipo" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            <SelectItem value={'person'}>Persona</SelectItem>
-                                            <SelectItem value={'company'}>Compañía</SelectItem>
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
-                            </TableCell>
-                            <TableCell>
-                                <Input
-                                    id={`${idx}-value`}
-                                    name={`${idx}-value`}
-                                    defaultValue={client.value}
-                                    type="number"
-                                />
-                            </TableCell>
-                            <TableCell>{<Popover open={open} onOpenChange={setOpen}>
-                                <PopoverTrigger asChild>
-                                    <Button
-                                        variant="outline"
-                                        className="w-48 justify-between font-normal"
-                                    >
-                                        {date ? date.toLocaleDateString() : "Select date"}
-                                        <ChevronDownIcon />
-                                    </Button>
-                                </PopoverTrigger>
-                                <PopoverContent className="w-auto overflow-hidden p-0" align="start">
-                                    <Calendar
-                                        mode="single"
-                                        selected={date}
-                                        captionLayout="dropdown"
-                                        onSelect={(date) => {
-                                            setDate(date)
-                                            setOpen(false)
-                                        }}
-                                    />
-                                </PopoverContent>
-                            </Popover>}</TableCell>
-                            <TableCell>{<Popover open={open} onOpenChange={setOpen}>
-                                <PopoverTrigger asChild>
-                                    <Button
-                                        variant="outline"
-                                        className="w-48 justify-between font-normal"
-                                    >
-                                        {date ? date.toLocaleDateString() : "Select date"}
-                                        <ChevronDownIcon />
-                                    </Button>
-                                </PopoverTrigger>
-                                <PopoverContent className="w-auto overflow-hidden p-0" align="start">
-                                    <Calendar
-                                        mode="single"
-                                        selected={date}
-                                        captionLayout="dropdown"
-                                        onSelect={(date) => {
-                                            setDate(date)
-                                            setOpen(false)
-                                        }}
-                                    />
-                                </PopoverContent>
-                            </Popover>}</TableCell>
-                            <TableCell>
-                                <Button type="submit" className="bg-red-400 hover:bg-red-500 cursor-pointer text-white text-md">Eliminar</Button>
-                            </TableCell>
-                            <TableCell>
-                                <Button type="submit" className="bg-green-400 hover:bg-green-500 cursor-pointer text-white text-md">Guardar cambios</Button>
-                            </TableCell>
-                        </TableRow>
+                    {clients?.map((client: Client, idx: number) => (
+                        <ClientRow key={idx} client={client} />
                     ))}
                 </TableBody>
             </Table>
