@@ -22,3 +22,12 @@ export const clients = pgTable("clients", {
   from: date("from").notNull(),
   to: date("to"),
 });
+
+export const files = pgTable("files", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  key: text("key").notNull(),
+  description: text("description"),
+  fileType: text("file_type").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});

@@ -1,4 +1,4 @@
-import { clients, projects } from '@/db/schema';
+import { clients, files, projects } from '@/db/schema';
 import { InferSelectModel } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
@@ -12,3 +12,4 @@ export { projects, clients };
 
 export type Project = InferSelectModel<typeof projects>;
 export type Client = InferSelectModel<typeof clients>;
+export type Files = InferSelectModel<typeof files>;
