@@ -55,3 +55,31 @@ export const useFiles = ({ page = 1, limit = 10 }: {page: number, limit:number})
     },
   });
 };
+
+export function useDownloadFile() {
+  return useMutation({
+    mutationFn: async (key: number | string) => {
+      const res = await fetch(`/api/files/${key}`)
+      if (!res.ok) {
+        const error = await res.json()
+        throw new Error(error.error || "Error descargando el archivo")
+      }
+      const data: { name: string; url: string } = await res.json()
+      const fileRes = await fetch(data.url)
+      if (!fileRes.ok) throw new Error("Error al obtener el archivo de S3")
+      const blob = await fileRes.blob()
+      const downloadUrl = window.URL.createObjectURL(blob)
+      const link = document.createElement("a")
+      link.href = downloadUrl
+      link.download = data.name
+      link.click()
+      window.URL.revokeObjectURL(downloadUrl)
+
+      return data.name
+    },
+    onError: (error) => {
+      console.error(error)
+      toast.error("Error al descargar el cliente")
+    },
+  })
+}
