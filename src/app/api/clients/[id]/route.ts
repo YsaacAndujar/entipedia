@@ -1,9 +1,19 @@
 import { db, clients } from "@/lib/db";
 import { clientsSchema } from "@/lib/validations";
-import { NextResponse } from "next/server";
+import { eq } from "drizzle-orm";
+import { NextRequest, NextResponse } from "next/server";
 
+export async function DELETE(_: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params;
+  try{
+      await db.delete(clients).where(eq(clients.id, Number( id)));
+      return new NextResponse(null, { status: 200 });
+    } catch (error) {
+        return NextResponse.json({error: 'Error eliminando el cliente'}, { status: 400 });
+    }
+}
 
-export async function POST(req: Request) {
+export async function PUT(req: Request, context: { params: Promise<{ id: string }> }) {
     try {
         const body = await req.json();
         const parsed = clientsSchema.safeParse(body);
@@ -15,8 +25,8 @@ export async function POST(req: Request) {
         }
         const data = parsed.data;
         const newClient = await db
-            .insert(clients)
-            .values({
+            .update(clients)
+            .set({
                 ...data,
                 value: data.value.toString(),
                 from: data.from.split("T")[0],
@@ -26,11 +36,6 @@ export async function POST(req: Request) {
         return NextResponse.json(newClient);
 
     } catch (error) {
-        return NextResponse.json({ error: 'Error creando el cliente' }, { status: 400 });
+        return NextResponse.json({ error: 'Error actualizando el cliente' }, { status: 400 });
     }
-}
-
-export async function GET() {
-    const allClients = await db.select().from(clients);
-    return NextResponse.json(allClients);
 }

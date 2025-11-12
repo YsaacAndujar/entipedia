@@ -23,17 +23,38 @@ export function useCreateClients({ onSuccess }: { onSuccess?: () => void }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       })
-      if (!res.ok) throw new Error("Error al crear el proyecto")
+      if (!res.ok) throw new Error("Error al crear el cliente")
       return res.json()
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["clients"] })
-      toast.success("Proyecto creado correctamente")
+      toast.success("Cliente creado correctamente")
       onSuccess?.()
     },
     onError: (error) => {
       console.error(error)
-      toast.error("Error al crear el proyecto")
+      toast.error("Error al crear el cliente")
+    },
+  })
+}
+
+export function useUpdateClients() {
+  return useMutation({
+    mutationFn: async ({id,...data}:  & {id: string | number},) => {
+      const res = await fetch(`/api/clients/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      })
+      if (!res.ok) throw new Error("Error al actualizar el cliente")
+      return res.json()
+    },
+    onSuccess: async () => {
+      toast.success("Cliente actualizado correctamente")
+    },
+    onError: (error) => {
+      console.error(error)
+      toast.error("Error al actualizar el cliente")
     },
   })
 }

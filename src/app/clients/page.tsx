@@ -1,34 +1,16 @@
 "use client"
-import { Input } from "@/components/ui/input";
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectTrigger,
-    SelectValue
-} from "@/components/ui/select";
 import {
     Table,
     TableBody,
-    TableCell,
     TableHead,
     TableHeader,
     TableRow
 } from "@/components/ui/table";
-import { ChevronLeft, ChevronRight, ChevronDownIcon } from "lucide-react";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import { useState } from "react";
-import { CreateClient } from "./componetns/CreateClient";
 import { useClientss as useClients } from "@/hooks/clients";
-import { ClientRow } from "./componetns/ClientRow";
 import { Client } from "@/lib/db";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ClientRow } from "./componetns/ClientRow";
+import { CreateClient } from "./componetns/CreateClient";
 
 export default function Page() {
     const { data: clients, isLoading, error } = useClients();

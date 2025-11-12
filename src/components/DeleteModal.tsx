@@ -11,8 +11,10 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Trash2 } from 'lucide-react'
 import { Button } from "./ui/button"
+import { useDelete } from "@/hooks/useDelete"
 
-export const DeleteModal = ({ onDelete, isPending }: { onDelete: ()=> void, isPending: boolean }) => {
+export const DeleteModal = ({ url, queryKey }: { url: string, queryKey: string[]}) => {
+    const { mutate: deleteProject, isPending,  } = useDelete()
 
     return (
         <>
@@ -30,7 +32,7 @@ export const DeleteModal = ({ onDelete, isPending }: { onDelete: ()=> void, isPe
                     <AlertDialogFooter>
                         <AlertDialogCancel>Cancelar</AlertDialogCancel>
                         <Button
-                            onClick={onDelete}
+                            onClick={() => deleteProject({url, queryKey})}
                             disabled={isPending}
                             className="bg-red-500 hover:bg-red-600 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                         >

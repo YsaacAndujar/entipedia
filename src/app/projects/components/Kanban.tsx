@@ -17,7 +17,6 @@ import { useEffect, useState } from 'react';
 type ProjectKanbanItem = KanbanItemProps & Omit<Project, "id" | "createdAt"> & { createdAt: string };
 export const Kanban = () => {
     const { data: projects, isLoading, error } = useProjects();
-    const { mutate: deleteProject, isPending } = useDelete()
     const { mutate: moveProject } = useMoveProject()
     const [projectsFormatted, setProjectsFormatted] = useState<ProjectKanbanItem[]>([])
     useEffect(() => {
@@ -60,7 +59,7 @@ export const Kanban = () => {
                                 id={project.id}
                                 key={project.id}
                                 name={project.name}
-                                deleteModalProps={{ onDelete: () => deleteProject({ url: `/api/projects/${project.id}`, queryKey: ["projects"] }), isPending }}
+                                deleteModalProps={{ url: `/api/projects/${project.id}`, queryKey: ["projects"] }}
                             >
                                 <div className="flex flex-col gap-2">
                                     <p className="font-medium text-sm text-foreground wrap-break-word">{project.name}</p>
