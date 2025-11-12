@@ -1,11 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
-import { GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
-import { s3 } from "@/lib/s3";
-import { randomUUID } from "crypto";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { db } from "@/lib/db";
 import { files } from "@/db/schema";
+import { db } from "@/lib/db";
+import { s3 } from "@/lib/s3";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { randomUUID } from "crypto";
 import { sql } from "drizzle-orm";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {

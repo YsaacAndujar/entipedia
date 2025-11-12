@@ -37,3 +37,13 @@ export const clientsSchema = z.object({
     );
 
 export type ClientsFormValues = z.infer<typeof clientsSchema>
+
+export const fileSchema = z.object({
+  name: z.string().min(1, "El nombre es obligatorio"),
+  description: z.string().optional(),
+  file: z
+    .instanceof(File, { message: "Debe seleccionar un archivo" })
+    .refine((file) => file.size > 0, "El archivo no puede estar vacío"),
+})
+
+export type FileFormValues = z.infer<typeof fileSchema>
