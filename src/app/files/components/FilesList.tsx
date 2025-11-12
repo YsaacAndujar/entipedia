@@ -1,28 +1,53 @@
-import { Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Files } from "@/lib/db";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+import { Download, Trash2 } from "lucide-react";
 
-export const FilesList = ({ files }: { files: any[] }) => {
+export const FilesList = ({ files }: { files: Files[] }) => {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3">
       {files.map((file) => (
         <div
-          key={file.name}
-          className="flex items-center justify-between p-3 border rounded-md bg-background"
+          key={file.id}
+          className="flex flex-col md:flex-row md:items-center justify-between p-4 border rounded-lg bg-background shadow-sm"
         >
-          {/* Nombre y tamaño */}
           <div className="flex flex-col">
-            <span className="font-medium text-foreground">{file.name}.{file.fileType}</span>
-            <span className="text-sm text-muted-foreground"></span>
+            <span className="font-semibold text-foreground">{file.name}</span>
+            {file.description && (
+              <span className="text-sm text-muted-foreground">
+                {file.description}
+              </span>
+            )}
+            <div className="flex gap-3 text-sm text-muted-foreground mt-1">
+              <span>{file.fileType}</span>
+              <span>•</span>
+              <span>
+                {format(new Date(file.createdAt), "dd MMM yyyy, HH:mm", { locale: es })}
+              </span>
+            </div>
           </div>
 
-          {/* Botón eliminar */}
-          <button
-            onClick={() => console.log("Eliminar", file.name)}
-            className="text-red-500 hover:text-red-600"
-          >
-            <Trash2 size={18} />
-          </button>
+          {/* Botones */}
+          <div className="flex items-center gap-2 mt-3 md:mt-0">
+            <Button
+              variant="outline"
+              size="sm"
+              className="text-blue-600 hover:text-blue-700 cursor-pointer"
+            >
+              <Download className="w-4 h-4 mr-1" /> Descargar
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-red-500 hover:text-red-600 cursor-pointer"
+              onClick={() => console.log("Eliminar", file.name)}
+            >
+              <Trash2 className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
       ))}
     </div>
-  );
-};
+  )
+}

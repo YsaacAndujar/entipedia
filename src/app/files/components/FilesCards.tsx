@@ -1,12 +1,13 @@
+import { Files } from '@/lib/db';
 import { Trash2 } from 'lucide-react';
 import React from 'react'
 
-export const FilesCards = ({files}:{files: any[]}) => {
+export const FilesCards = ({files}:{files: Files[]}) => {
  return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       {files.map((file) => (
         <div
-          key={file.name}
+          key={file.id}
           className="p-4 border rounded-lg shadow-sm flex flex-col justify-between bg-background hover:shadow-md transition-shadow"
         >
           <div className="flex flex-col gap-1">

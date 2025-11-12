@@ -13,43 +13,15 @@ import { FilesList } from "./FilesList"
 import { FilesCards } from "./FilesCards"
 import { FilesTable } from "./FilesTable"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-
-const files = [
-    {
-        name: "Informe de Ventas",
-        description: "Reporte mensual de ventas",
-        fileType: "PDF",
-        createdAt: "2025-11-08",
-    },
-    {
-        name: "Presentación Proyecto X",
-        description: "Diapositivas del proyecto X",
-        fileType: "PPTX",
-        createdAt: "2025-10-30",
-    },
-    {
-        name: "Lista de Clientes",
-        description: "Archivo con todos los clientes activos",
-        fileType: "XLSX",
-        createdAt: "2025-11-01",
-    },
-    {
-        name: "Contrato Empresa Y",
-        description: "Contrato firmado con Empresa Y",
-        fileType: "PDF",
-        createdAt: "2025-09-20",
-    },
-    {
-        name: "Imagen Producto Z",
-        description: "Fotografía del producto Z",
-        fileType: "JPG",
-        createdAt: "2025-11-05",
-    },
-];
-
+import { useFiles } from "@/hooks/files"
 
 export const FileViewer = () => {
     const [mode, setMode] = useState("list")
+    const [page, setPage] = useState(1);
+    const { data, isLoading, error } = useFiles({ page, limit: 10 });
+    if (isLoading) return <p>Cargando clientes...</p>;
+    if (error) return <p>Error al cargar los clientes.</p>;
+    const { data: files, pagination } = data
     return (
         <>
             <div className="flex flex-col gap-4">
@@ -76,9 +48,29 @@ export const FileViewer = () => {
                     mode == "table" && <FilesTable files={files} />
                 }
                 <div className="flex items-center justify-center space-x-2 mt-4">
-                    <ChevronLeft className="w-5 h-5 cursor-pointer" />
-                    <span className="px-3 py-1">1 de 2</span>
-                    <ChevronRight className="w-5 h-5 cursor-pointer" />
+                    <button
+                        onClick={() => setPage((p) => Math.max(p - 1, 1))}
+                        disabled={page <= 1}
+                        className="disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        <ChevronLeft className="w-5 h-5 cursor-pointer" />
+                    </button>
+
+                    <span className="px-3 py-1 text-sm font-medium">
+                        {pagination.page} de {pagination.totalPages}
+                    </span>
+
+                    <button
+                        onClick={() =>
+                            setPage((p) =>
+                                p < pagination.totalPages ? p + 1 : pagination.totalPages
+                            )
+                        }
+                        disabled={page >= pagination.totalPages}
+                        className="disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        <ChevronRight className="w-5 h-5 cursor-pointer" />
+                    </button>
                 </div>
             </div>
         </>

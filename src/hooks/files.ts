@@ -1,5 +1,5 @@
 import { FileFormValues, fileSchema } from '@/lib/validations'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
 export function useUploadFile({ onSuccess }: { onSuccess?: () => void }) {
@@ -44,3 +44,14 @@ export function useUploadFile({ onSuccess }: { onSuccess?: () => void }) {
         },
     })
 }
+
+export const useFiles = ({ page = 1, limit = 10 }: {page: number, limit:number}) => {
+  return useQuery({
+    queryKey: ["files", page, limit],
+    queryFn: async () => {
+      const res = await fetch(`/api/files?page=${page}&limit=${limit}`);
+      if (!res.ok) throw new Error("Error fetching files");
+      return res.json();
+    },
+  });
+};

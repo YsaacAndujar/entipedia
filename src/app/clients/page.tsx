@@ -9,10 +9,9 @@ import {
 import { useClients } from "@/hooks/clients";
 import { Client } from "@/lib/db";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useState } from "react";
 import { ClientRow } from "./componetns/ClientRow";
 import { CreateClient } from "./componetns/CreateClient";
-import { useState } from "react";
-import { ClientReferenceManifestPlugin } from "next/dist/build/webpack/plugins/flight-manifest-plugin";
 
 export default function Page() {
     const [page, setPage] = useState(1);

@@ -8,8 +8,9 @@ import {
     TableHeader,
     TableRow
 } from "@/components/ui/table";
+import { Files } from "@/lib/db";
 
-export const FilesTable = ({files}:{files: any[]}) => {
+export const FilesTable = ({files}:{files: Files[]}) => {
   return (
     <Table>
   <TableHeader>
@@ -22,12 +23,12 @@ export const FilesTable = ({files}:{files: any[]}) => {
     </TableRow>
   </TableHeader>
   <TableBody>
-    {files.map((file, idx) => (
-      <TableRow key={file.name}>
+    {files.map((file) => (
+      <TableRow key={file.id}>
         <TableCell>{file.name}</TableCell>
         <TableCell>{file.description}</TableCell>
         <TableCell>{file.fileType}</TableCell>
-        <TableCell>{file.createdAt}</TableCell>
+        {/* <TableCell>{file.createdAt}</TableCell> */}
         <TableCell>
           <Button
             type="button"
