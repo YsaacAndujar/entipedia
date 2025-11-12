@@ -2,11 +2,16 @@ import { ClientsFormValues } from "@/lib/validations";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
-export const useClientss = () => {
+interface UseClientsOptions {
+  page?: number;
+  limit?: number;
+}
+
+export const useClients = ({ page = 1, limit = 10 }: UseClientsOptions = {}) => {
   return useQuery({
-    queryKey: ["clients"],
+    queryKey: ["clients", page, limit],
     queryFn: async () => {
-      const res = await fetch("/api/clients");
+      const res = await fetch(`/api/clients?page=${page}&limit=${limit}`);
       if (!res.ok) throw new Error("Error fetching clients");
       return res.json();
     },
@@ -40,7 +45,7 @@ export function useCreateClients({ onSuccess }: { onSuccess?: () => void }) {
 
 export function useUpdateClients() {
   return useMutation({
-    mutationFn: async ({id,...data}:  & {id: string | number},) => {
+    mutationFn: async ({ id, ...data }: & { id: string | number },) => {
       const res = await fetch(`/api/clients/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },

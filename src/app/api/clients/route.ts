@@ -1,5 +1,6 @@
 import { db, clients } from "@/lib/db";
 import { clientsSchema } from "@/lib/validations";
+import { sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
 
@@ -30,7 +31,39 @@ export async function POST(req: Request) {
     }
 }
 
-export async function GET() {
-    const allClients = await db.select().from(clients);
-    return NextResponse.json(allClients);
+export async function GET(req: Request) {
+    try {
+        const { searchParams } = new URL(req.url);
+        const page = Number(searchParams.get("page")) || 1;
+        const limit = Number(searchParams.get("limit")) || 10;
+        const offset = (page - 1) * limit;
+
+        const totalResult = await db
+            .select({ count: sql<number>`count(*)` })
+            .from(clients);
+        const total = totalResult[0]?.count ?? 0;
+
+        const data = await db
+            .select()
+            .from(clients)
+            .limit(limit)
+            .offset(offset)
+            .orderBy(clients.id);
+
+        return NextResponse.json({
+            data,
+            pagination: {
+                page,
+                limit,
+                total,
+                totalPages: Math.ceil(total / limit),
+            },
+        });
+    } catch (error) {
+        console.error("Error obteniendo clientes:", error);
+        return NextResponse.json(
+            { error: "Error obteniendo los clientes" },
+            { status: 500 }
+        );
+    }
 }

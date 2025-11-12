@@ -14,6 +14,7 @@ export async function DELETE(_: NextRequest, context: { params: Promise<{ id: st
 }
 
 export async function PUT(req: Request, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params;
     try {
         const body = await req.json();
         const parsed = clientsSchema.safeParse(body);
@@ -32,6 +33,7 @@ export async function PUT(req: Request, context: { params: Promise<{ id: string 
                 from: data.from.split("T")[0],
                 to: data.to ? data.to.split("T")[0] : null,
             })
+            .where(eq(clients.id, Number(id)))
             .returning();
         return NextResponse.json(newClient);
 
