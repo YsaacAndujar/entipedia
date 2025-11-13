@@ -28,7 +28,7 @@ export async function GET(_: NextRequest, context: { params: Promise<{ id: strin
 }
 
 
-export async function DELETE(_: NextRequest, context: { params: { id: string } }) {
+export async function DELETE(_: NextRequest, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
   try {
     const file = await db
