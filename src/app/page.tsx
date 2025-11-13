@@ -1,8 +1,5 @@
-// app/page.tsx o src/app/page.tsx según tu estructura
-
-import { Button } from "@/components/ui/button"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { ArrowRight, BookOpen } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { BookOpen } from "lucide-react"
 
 export default function Home() {
   return (

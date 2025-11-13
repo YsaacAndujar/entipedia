@@ -10,7 +10,6 @@ import {
 } from '@/components/ui/shadcn-io/kanban';
 import { ProjectStatus } from '@/db/schema';
 import { useMoveProject, useProjects } from '@/hooks/projects';
-import { useDelete } from '@/hooks/useDelete';
 import { Project } from '@/lib/db';
 import { cn, formatDate, PRIORITY_LABELS, projectStatuses } from '@/lib/utils';
 import { useEffect, useState } from 'react';
