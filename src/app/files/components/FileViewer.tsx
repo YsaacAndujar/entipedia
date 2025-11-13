@@ -19,8 +19,8 @@ export const FileViewer = () => {
     const [mode, setMode] = useState("list")
     const [page, setPage] = useState(1);
     const { data, isLoading, error } = useFiles({ page, limit: 10 });
-    if (isLoading) return <p>Cargando clientes...</p>;
-    if (error) return <p>Error al cargar los clientes.</p>;
+    if (isLoading) return <p>Cargando archivos...</p>;
+    if (error) return <p>Error al cargar los archivos.</p>;
     const { data: files, pagination } = data
     return (
         <>
