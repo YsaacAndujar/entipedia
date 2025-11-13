@@ -4,7 +4,7 @@ import { useDownloadFile } from "@/hooks/files";
 import { Files } from "@/lib/db";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import { Download, Trash2 } from "lucide-react";
+import { Download } from "lucide-react";
 
 export const FilesListItem = ({ file }: { file: Files }) => {
     const { mutate: downloadFile, isPending } = useDownloadFile()
@@ -30,6 +30,7 @@ export const FilesListItem = ({ file }: { file: Files }) => {
             </div>
 
             <div className="flex items-center gap-2 mt-3 md:mt-0">
+                <DeleteModal queryKey={["files"]} url={`api/files/${file.id}`} />
                 <Button
                     variant="outline"
                     size="sm"
@@ -39,7 +40,6 @@ export const FilesListItem = ({ file }: { file: Files }) => {
                 >
                     <Download className="w-4 h-4 mr-1" /> {isPending ? "Descargando..." : "Descargar"}
                 </Button>
-                <DeleteModal queryKey={["files"]} url={`api/files/${file.id}`} />
             </div>
         </div>
     )
