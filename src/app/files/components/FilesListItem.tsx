@@ -2,8 +2,7 @@ import { DeleteModal } from "@/components/DeleteModal";
 import { Button } from "@/components/ui/button";
 import { useDownloadFile } from "@/hooks/files";
 import { Files } from "@/lib/db";
-import { format } from "date-fns";
-import { es } from "date-fns/locale";
+import { formatDate } from "@/lib/utils";
 import { Download } from "lucide-react";
 
 export const FilesListItem = ({ file }: { file: Files }) => {
@@ -24,7 +23,7 @@ export const FilesListItem = ({ file }: { file: Files }) => {
                     <span>{file.fileType}</span>
                     <span>•</span>
                     <span>
-                        {format(new Date(file.createdAt), "dd MMM yyyy, HH:mm", { locale: es })}
+                        {formatDate(file.createdAt)}
                     </span>
                 </div>
             </div>

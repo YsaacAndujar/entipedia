@@ -25,7 +25,7 @@ export const projectStatuses = [
   { id: 'completed', name: 'Completado', color: '#10B981' },
 ];
 
-export const formatDate = (date: string) =>(new Date(date).toLocaleString("es-DO", {
+export const formatDate = (date: string | Date ) =>(new Date(date).toLocaleString("es-DO", {
   day: "2-digit",
   month: "2-digit",
   year: "numeric",

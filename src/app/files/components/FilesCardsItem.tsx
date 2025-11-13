@@ -2,6 +2,7 @@ import { DeleteModal } from '@/components/DeleteModal'
 import { Button } from '@/components/ui/button'
 import { useDownloadFile } from '@/hooks/files'
 import { Files } from '@/lib/db'
+import { formatDate } from '@/lib/utils'
 import { Download } from 'lucide-react'
 
 export const FilesCardsItem = ({ file }: { file: Files }) => {
@@ -17,13 +18,12 @@ export const FilesCardsItem = ({ file }: { file: Files }) => {
                 <span className="text-sm text-muted-foreground">{file.description}</span>
                 <div className="text-xs text-muted-foreground mt-1">
                     <span className="mr-2">{file.fileType}</span>
-                    <span>{new Date(file.createdAt).toLocaleDateString()}</span>
+                    <span>{formatDate(file.createdAt)}</span>
                 </div>
             </div>
 
             <div className="flex justify-end mt-3 gap-5">
                 <button
-                    onClick={() => console.log("Eliminar", file.name)}
                     className="text-red-500 hover:text-red-600"
                 >
                     <DeleteModal queryKey={["files"]} url={`api/files/${file.id}`} />
